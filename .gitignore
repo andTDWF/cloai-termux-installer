@@ -1,0 +1,4 @@
+resources/
+dist/
+tmp/
+*.tmp

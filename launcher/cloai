@@ -1,0 +1,22 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -euo pipefail
+
+INSTALL_ROOT="${CLOAI_INSTALL_ROOT:-$HOME/.local/share/cloai}"
+RUNTIME_DIR="$INSTALL_ROOT/current"
+
+fail() {
+  printf 'cloai: %s\n' "$*" >&2
+  exit 1
+}
+
+[[ -x "$RUNTIME_DIR/bin/cloai" ]] || fail "找不到 Cloai：$RUNTIME_DIR/bin/cloai"
+[[ -x "$RUNTIME_DIR/bin/buno" ]] || fail "找不到 Bun 运行时：$RUNTIME_DIR/bin/buno"
+[[ -f "$RUNTIME_DIR/lib/bun-shim.so" ]] || fail "找不到 Bun-Termux shim：$RUNTIME_DIR/lib/bun-shim.so"
+
+export BUN_INSTALL="$RUNTIME_DIR"
+export BUN_BINARY_PATH="$RUNTIME_DIR/bin/buno"
+export TMPDIR="${TMPDIR:-${PREFIX:-/data/data/com.termux/files/usr}/tmp}"
+export TMP="${TMP:-$TMPDIR}"
+export TEMP="${TEMP:-$TMPDIR}"
+
+exec "$RUNTIME_DIR/bin/cloai" "$@"
