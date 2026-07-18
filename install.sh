@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -euo pipefail
 
-VERSION="${CLOAI_VERSION:-0.0.3}"
+VERSION="${CLOAI_VERSION:-0.0.4}"
 PLATFORM="android-arm64"
 REPOSITORY="${CLOAI_REPOSITORY:-andTDWF/cloai-termux-installer}"
 INSTALL_ROOT="${CLOAI_INSTALL_ROOT:-$HOME/.local/share/cloai}"
@@ -80,13 +80,28 @@ VERSION_DIR="$VERSIONS_DIR/$VERSION"
 NEW_VERSION_DIR="$VERSIONS_DIR/.${VERSION}.new.$$"
 CURRENT_LINK="$INSTALL_ROOT/current"
 PREVIOUS_TARGET=""
+REUSE_RUNTIME_DIR=""
+
+if
+  [[ -L "$CURRENT_LINK" ]] &&
+  [[ -x "$CURRENT_LINK/bin/buno" ]] &&
+  [[ -f "$CURRENT_LINK/lib/bun-shim.so" ]]
+then
+  REUSE_RUNTIME_DIR="$(CDPATH= cd -- "$CURRENT_LINK" && pwd -P)"
+fi
 
 mkdir -p "$VERSIONS_DIR" "$BIN_DIR"
 rm -rf "$NEW_VERSION_DIR"
 mkdir -p "$NEW_VERSION_DIR/bin" "$NEW_VERSION_DIR/lib"
 install -m 755 "$PACKAGE_DIR/bin/cloai" "$NEW_VERSION_DIR/bin/cloai"
-install -m 755 "$PACKAGE_DIR/bin/buno" "$NEW_VERSION_DIR/bin/buno"
-install -m 755 "$PACKAGE_DIR/lib/bun-shim.so" "$NEW_VERSION_DIR/lib/bun-shim.so"
+if [[ -n "$REUSE_RUNTIME_DIR" ]]; then
+  ln -s "$REUSE_RUNTIME_DIR/bin/buno" "$NEW_VERSION_DIR/bin/buno"
+  ln -s "$REUSE_RUNTIME_DIR/lib/bun-shim.so" "$NEW_VERSION_DIR/lib/bun-shim.so"
+  printf '复用现有 Bun 运行环境，仅更新 Cloai 二进制。\n'
+else
+  install -m 755 "$PACKAGE_DIR/bin/buno" "$NEW_VERSION_DIR/bin/buno"
+  install -m 755 "$PACKAGE_DIR/lib/bun-shim.so" "$NEW_VERSION_DIR/lib/bun-shim.so"
+fi
 install -m 644 "$PACKAGE_DIR/VERSION" "$NEW_VERSION_DIR/VERSION"
 install -m 644 "$PACKAGE_DIR/PLATFORM" "$NEW_VERSION_DIR/PLATFORM"
 
