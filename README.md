@@ -6,7 +6,7 @@
 
 - Termux / Android
 - ARM64 (`aarch64`)
-- Cloai `0.0.5`
+- Cloai `0.0.6`
 - Bun `1.3.13`
 
 归档包含 `cloai`、`buno` 和 `bun-shim.so`。目标设备仍需安装 Termux 的 `glibc-runner`；安装器会在缺少时调用 `pkg` 安装。
@@ -48,11 +48,11 @@ sha256sum bin/cloai bin/buno lib/bun-shim.so > SHA256SUMS
 产物：
 
 ```text
-dist/cloai-0.0.5-android-arm64.tar.gz
-dist/cloai-0.0.5-android-arm64.tar.gz.sha256
+dist/cloai-0.0.6-android-arm64.tar.gz
+dist/cloai-0.0.6-android-arm64.tar.gz.sha256
 ```
 
-将这两个文件作为附件上传到 GitHub Release `v0.0.5`。`dist/` 同样不提交到 Git 仓库。仓库只保存安装器、启动器、配置、打包脚本和文档。
+将这两个文件作为附件上传到 GitHub Release `v0.0.6`。`dist/` 同样不提交到 Git 仓库。仓库只保存安装器、启动器、配置、打包脚本和文档。
 
 ## 一键安装
 
@@ -64,7 +64,7 @@ curl -fsSL "https://raw.githubusercontent.com/andTDWF/cloai-termux-installer/mai
 
 ```bash
 curl -fsSL "https://raw.githubusercontent.com/andTDWF/cloai-termux-installer/main/install.sh" |
-  env CLOAI_VERSION=0.0.5 bash
+  env CLOAI_VERSION=0.0.6 bash
 ```
 
 默认安装位置：
@@ -80,7 +80,7 @@ $PREFIX/bin/cloai
 无需上传 GitHub，可直接测试生成的归档：
 
 ```bash
-CLOAI_LOCAL_ARCHIVE="$PWD/dist/cloai-0.0.5-android-arm64.tar.gz" \
+CLOAI_LOCAL_ARCHIVE="$PWD/dist/cloai-0.0.6-android-arm64.tar.gz" \
 CLOAI_INSTALL_ROOT="$PWD/tmp/install" \
 CLOAI_BIN_DIR="$PWD/tmp/bin" \
 ./install.sh
