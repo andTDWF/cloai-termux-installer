@@ -3,4 +3,5 @@ dist/
 tmp/
 scripts/
 release.conf
+CLOAI.md
 *.tmp
