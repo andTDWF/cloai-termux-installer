@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -euo pipefail
 
-VERSION="${CLOAI_VERSION:-0.0.8}"
+VERSION="${CLOAI_VERSION:-0.0.9}"
 PLATFORM="android-arm64"
 REPOSITORY="${CLOAI_REPOSITORY:-andTDWF/cloai-termux-installer}"
 INSTALL_ROOT="${CLOAI_INSTALL_ROOT:-$HOME/.local/share/cloai}"
